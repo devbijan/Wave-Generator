@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wave Generator</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-grid">
+      <h1>Wave<br>Generator<span class="cursor">_</span></h1>
+      <div class="header-content">
+        <p class="header-description">
+          A wave generation tool for creating unique SVG waves. Perfect for headers, 
+          sections, and creative web designs.
+        </p>
+        <div class="header-meta">
+          <div class="meta-item">
+            <span class="meta-label">VERSION</span>
+            <span class="meta-value">1.0.0</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">LAST UPDATE</span>
+            <span class="meta-value">2024</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Author</span>
+            <span class="meta-value"><a class="link" href="https://fandeytech.com" target="_blank">Bijan Fandey</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <div class="layout-grid">
+
+        <!-- ====================== -->
+        <!-- CONTROLS (Left Column) -->
+        <!-- ====================== -->
+        <div class="controls">
+
+          <!-- 01. Wave Type Section -->
+          <div class="control-section">
+            <div class="control-header expanded"
+                 role="button"
+                 tabindex="0"
+                 aria-controls="wave-type-content"
+                 aria-expanded="true">
+              <div class="control-header-left">
+                <h3>Wave Type <span class="control-number">01</span></h3>
+                <i class="fas fa-chevron-down expand-icon" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="control-content visible"
+                 id="wave-type-content"
+                 role="region"
+                 aria-label="Wave type controls"
+                 aria-hidden="false">
+              <div class="control-content-inner">
+                <div class="button-group">
+                  <button id="smooth-btn" onclick="setWaveType('smooth')">Smooth</button>
+                  <button id="sharp-btn" onclick="setWaveType('sharp')">Sharp</button>
+                  <button id="steps-btn" onclick="setWaveType('steps')">Steps</button>
+                  <button id="jagged-btn" onclick="setWaveType('jagged')">Jagged</button>
+                  <button id="arc-btn" onclick="setWaveType('arc')">Arc</button>
+                </div>
+                <div class="control-actions">
+                  <button class="random-button" onclick="randomizeWaveType()">
+                    <i class="fas fa-dice-one"></i>
+                    <span>Random</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 02. Wave Complexity Section -->
+          <div class="control-section">
+            <div class="control-header expanded"
+                 role="button"
+                 tabindex="0"
+                 aria-controls="complexity-content"
+                 aria-expanded="true">
+              <div class="control-header-left">
+                <h3>Wave Complexity <span class="control-number">02</span></h3>
+                <i class="fas fa-chevron-down expand-icon" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="control-content visible"
+                 id="complexity-content"
+                 role="region"
+                 aria-label="Wave complexity controls"
+                 aria-hidden="false">
+              <div class="control-content-inner">
+                <div class="range-container">
+                  <label class="range-label">
+                    <span>Level</span>
+                    <div class="range-inputs">
+                      <input
+                        type="range"
+                        id="complexity"
+                        class="range-input"
+                        min="3"
+                        max="20"
+                        value="8"
+                        aria-label="Wave Complexity"
+                      />
+                      <input
+                        type="number"
+                        id="complexity-value"
+                        class="range-value"
+                        min="3"
+                        max="20"
+                        value="8"
+                      />
+                    </div>
+                  </label>
+                </div>
+                <div class="control-actions">
+                  <button class="random-button" onclick="randomizeComplexity()">
+                    <i class="fas fa-dice-two"></i>
+                    <span>Random</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 03. Colors Section -->
+          <div class="control-section">
+            <div class="control-header expanded"
+                 role="button"
+                 tabindex="0"
+                 aria-controls="colors-content"
+                 aria-expanded="true">
+              <div class="control-header-left">
+                <h3>Colors <span class="control-number">03</span></h3>
+                <i class="fas fa-chevron-down expand-icon" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="control-content visible"
+                 id="colors-content"
+                 role="region"
+                 aria-label="Color controls"
+                 aria-hidden="false">
+              <div class="control-content-inner">
+
+                <!-- Color Mode Toggle -->
+                <div class="color-mode">
+                  <label>
+                    <input type="radio" name="color-mode" value="gradient" checked onclick="setColorMode('gradient')" />
+                    Gradient
+                  </label>
+                  <label>
+                    <input type="radio" name="color-mode" value="solid" onclick="setColorMode('solid')" />
+                    Solid
+                  </label>
+                </div>
+
+                <!-- Solid Color Controls (hidden by default) -->
+                <div class="solid-color-controls" style="display: none; margin-top: 1rem;">
+                  <label for="solid-color" style="display:block; margin-bottom: .5rem;">Solid Color</label>
+                  <input
+                    type="color"
+                    id="solid-color"
+                    value="#3498db"
+                    onchange="updateSolidColor()"
+                  />
+                </div>
+
+                <!-- Gradient Controls (shown by default) -->
+                <div class="gradient-controls" style="margin-top: 1rem;">
+                  <select id="color-theme" onchange="updateColorTheme()">
+                    <option value="graphite" selected>Graphite</option>
+                    <option value="custom">Custom</option>
+                    <option value="ocean">Ocean</option>
+                    <option value="sunset">Sunset</option>
+                    <option value="forest">Forest</option>
+                    <option value="candy">Candy</option>
+                    <option value="midnight">Midnight</option>
+                    <option value="volcano">Volcano</option>
+                    <option value="nordic">Nordic</option>
+                  </select>
+                  <div id="custom-colors" style="margin-top: 1rem;">
+                    <div class="color-inputs" style="display: flex; gap: 1rem;">
+                      <input type="color" id="color-start" value="#0099ff" />
+                      <input type="color" id="color-end" value="#0066cc" />
+                    </div>
+                    <label class="range-label" style="margin-top: 1rem; display: block;">
+                      <span>Angle</span>
+                      <div class="range-inputs" style="display: flex; gap: 1rem; align-items: center;">
+                        <input
+                          type="range"
+                          id="gradient-angle"
+                          class="range-input"
+                          min="0"
+                          max="360"
+                          value="180"
+                          aria-label="Gradient Angle"
+                        />
+                        <input
+                          type="number"
+                          id="gradient-angle-value"
+                          class="range-value"
+                          min="0"
+                          max="360"
+                          value="180"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Stroke Controls -->
+                <div class="stroke-controls" style="margin-top: 2rem;">
+                  <h4 style="margin: 0 0 0.5rem;">Stroke Options</h4>
+                  <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                      <label for="stroke-color">Stroke Color</label>
+                      <input
+                        type="color"
+                        id="stroke-color"
+                        value="#000000"
+                        onchange="updateStroke()"
+                      />
+                    </div>
+                    <label class="range-label" style="margin-top: 1rem; display: block;">
+                        <span>Stroke Width</span>
+                        <div class="range-inputs" style="display: flex; gap: 1rem; align-items: center;">
+                          <input
+                            type="range"
+                            id="stroke-width"
+                            class="range-input"
+                            min="0"
+                            max="15"
+                            value="2"
+                            name="stroke-width"
+                            aria-label="Stroke Width"
+                          />
+                          <input
+                            type="number"
+                            id="stroke-width-value"
+                            class="range-value"
+                            min="0"
+                            max="15"
+                            value="2"
+                          />
+                        </div>
+                      </label>
+                      
+
+                  </div>
+                </div>
+
+                <!-- Control Actions -->
+                <div class="control-actions" style="margin-top: 2rem;">
+                  <button class="random-button" onclick="randomizeColors()">
+                    <i class="fas fa-dice-three"></i>
+                    <span>Random</span>
+                  </button>
+                  <button class="reset-button" onclick="resetTheme()">Reset</button>
+                </div>
+
+              </div> 
+            </div> 
+          </div>
+
+          <button onclick="randomizeAll()" class="random-button randomize-all">
+            <div class="randomize-icon">
+              <i class="fas fa-dice"></i>
+            </div>
+            <span>Randomize All</span>
+          </button>
+
+        </div>
+
+        <!-- =========================== -->
+        <!-- PREVIEW AND CODE (Right Column) -->
+        <!-- =========================== -->
+        <div class="output-section">
+          <div id="wave-container">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+              <defs>
+                  <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" class="gradient-start" stop-color="#3A3A3A" />
+                      <stop offset="100%" class="gradient-end" stop-color="#1F1F1F" />
+                  </linearGradient>
+              </defs>
+              <!-- FILL PATH -->
+              <path class="wave-fill" fill="url(#wave-gradient)" fill-opacity="1"></path>
+              <!-- STROKE PATH (no fill, just the top line) -->
+              <path class="wave-stroke" fill="none" stroke="#000000" stroke-width="2"></path>
+          </svg>
+          </div>
+
+          <div class="code-output" role="region" aria-label="SVG Code Output">
+            <div
+              class="code-header"
+              id="code-header"
+              role="button"
+              tabindex="0"
+              aria-expanded="false"
+              aria-controls="code-content"
+            >
+              <div class="code-header-left">
+                <i class="fas fa-chevron-down expand-icon" aria-hidden="true"></i>
+                <h3>SVG Code <span class="control-number">04</span></h3>
+              </div>
+              <button
+                type="button"
+                class="copy-button"
+                aria-label="Copy SVG code"
+                onclick="copySVGCode()"
+              >
+                <i class="fas fa-code" aria-hidden="true"></i>
+                <span>Copy Code</span>
+              </button>
+            </div>
+            <div
+              class="code-content"
+              id="code-content"
+              role="region"
+              aria-label="SVG code content"
+            >
+              <pre><code id="svg-code"></code></pre>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-section">
+        <h4>About</h4>
+        <p>A simple yet powerful tool for generating SVG waves. Inspired by <a class="link" href="https://getwaves.io/">GetWaves.io</a></p>
+      </div>
+      <div class="footer-section">
+        <h4>Usage</h4>
+        <p>1. Customize your wave using the controls</p>
+        <p>2. Preview the result in real-time</p>
+        <p>3. Copy the generated SVG code</p>
+      </div>
+      <div class="footer-section footer-meta">
+        <div class="meta-item">
+          <span class="meta-label">Made With</span>
+          <span class="meta-value">HTML + CSS + JS</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">License</span>
+          <span class="meta-value">MIT</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main Script -->
+  <script src="script.js"></script>
+</body>
+</html>
